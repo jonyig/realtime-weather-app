@@ -93,7 +93,7 @@ const WeatherSetting = props => {
     const { cityName, setCurrentPage, setCurrentCity } = props;
     const [locationName, setLocationName] = useState(cityName);
     const handleChange = e => {
-        console.log(e.target.value);
+        // console.log(e.target.value);
 
         // STEP 5：把使用者輸入的內容更新到 React 內的資料狀態
         setLocationName(e.target.value);

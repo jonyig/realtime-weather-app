@@ -6,6 +6,7 @@ import { ReactComponent as AirFlowIcon } from "./images/airFlow.svg";
 import { ReactComponent as RefreshIcon } from "./images/refresh.svg";
 import { ReactComponent as LoadingIcon } from "./images/loading.svg";
 import { ReactComponent as CogIcon } from "./images/cog.svg";
+import Moment from "moment";
 const WeatherCardWrapper = styled.div`
   position: relative;
   min-width: 360px;
@@ -157,7 +158,7 @@ const WeatherCard = props => {
                 {new Intl.DateTimeFormat("zh-TW", {
                     hour: "numeric",
                     minute: "numeric"
-                }).format(new Date(observationTime))}
+                }).format(Moment(observationTime))}
                 {isLoading ? <LoadingIcon /> : <RefreshIcon />}
             </Refresh>
         </WeatherCardWrapper>

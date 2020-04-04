@@ -42,7 +42,7 @@ const fetchCurrentWeather = locationName => {
                 },
                 {}
             );
-            console.log(locationData);
+            // console.log(locationData);
             return {
                 observationTime: locationData.time.obsTime,
                 locationName: locationData.locationName,
