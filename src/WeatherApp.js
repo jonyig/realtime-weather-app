@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styled from "@emotion/styled";
-import sunriseAndSunsetData from "./sunrise-sunset.json";
 import WeatherCard from "./WeatherCard.js";
 import { ThemeProvider } from "emotion-theming";
 import useWeatherApi from "./useWeatherApi";
+import useSunsetApi from "./useSunsetApi";
 import WeatherSetting from "./WeatherSetting.js";
 import { findLocation } from "./utils";
+import Moment from "moment";
 
 const theme = {
     light: {
@@ -34,27 +35,15 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-const getMoment = locationName => {
-    const location = sunriseAndSunsetData.find(
-        data => data.locationName === locationName
-    );
-    if (!location) return null;
+const getMoment = (locationName,sunset) => {
+    if (!sunset) return null;
 
     const now = new Date();
-    const nowDate = Intl.DateTimeFormat("zh-TW", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-    })
-        .format(now)
-        .replace(/\//g, "-");
-    const locationDate =
-        location.time && location.time.find(time => time.dataTime === nowDate);
     const sunriseTimestamp = new Date(
-        `${locationDate.dataTime} ${locationDate.sunrise}`
+        `${Moment().format('YYYY-MM-DD')} ${sunset.rising}`
     ).getTime();
     const sunsetTimestamp = new Date(
-        `${locationDate.dataTime} ${locationDate.sunset}`
+        `${Moment().format('YYYY-MM-DD')} ${sunset.falling}`
     ).getTime();
     const nowTimeStamp = now.getTime();
 
@@ -72,8 +61,8 @@ const WeatherApp = () => {
     const [weatherElement, fetchData] = useWeatherApi(currentLocation);
     const [currentTheme, setCurrentTheme] = useState("light");
     const [currentPage, setCurrentPage] = useState("WeatherCard");
-
-    const moment = useMemo(() => getMoment(currentLocation.sunriseCityName), [
+    const sunset = useSunsetApi(currentLocation)
+    const moment = useMemo(() => getMoment(currentLocation.sunriseCityName,sunset), [
         currentLocation.sunriseCityName
     ]);
     useEffect(() => {
